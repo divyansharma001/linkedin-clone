@@ -3,7 +3,7 @@ import React from "react";
 import Profilephoto from "./shared/Profilephoto";
 
 const Sidebar = ({ user }: { user: any }) => {
-  console.log(user.externalAccounts[0].username);
+  console.log(user?.externalAccounts[0]?.username);
   return (
     <div className="hidden md:block w-[20%] h-fit border-gray-300 bg-white rounded">
       <div className="flex relative flex-col items-center">
@@ -27,9 +27,9 @@ const Sidebar = ({ user }: { user: any }) => {
           <div className="p-2 mt-5 text-center">
 
             <h1 className="font-semibold hover:underline cursor-pointer">{user ? `${user?.firstName} ${user?.lastName}` : "Login to continue"}</h1>
-<p className="text-xs">@{user ? `${user.externalAccounts[0].username}` : "username"}</p>
+<p className="text-xs">@{user ? `${user?.externalAccounts[0]?.username}` : "username"}</p>
           </div>
-
+ 
           <div className="text-xs">
             <div className="w-full flex justify-between items-center py-2 hover:bg-gray-200">
 
