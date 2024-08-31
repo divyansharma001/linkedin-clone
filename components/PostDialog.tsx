@@ -35,9 +35,7 @@ export function Postdialog({
               <p className="text-xs text-gray-500 pt-1">Post to anyone</p>
             </div>
           </DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription>
+         
         </DialogHeader>
         <form action="">
           <div className="flex flex-col">
