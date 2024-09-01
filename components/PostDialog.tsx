@@ -25,7 +25,7 @@ export function Postdialog({
     <Dialog open={open}>
       <DialogContent
         onInteractOutside={() => setOpen(false)}
-        className="sm:max-w-[425px]"
+        className="sm:max-w-[550px] sm:max-h-[80vh] md:max-w-[800px] md:max-h-100vh overflow-y-auto"
       >
         <DialogHeader>
           <DialogTitle className="flex gap-2">
@@ -42,12 +42,12 @@ export function Postdialog({
             <Textarea 
             id="name"
             name="inputText"
-            className="border-none text-lg focus-visible:ring"
-            placeholder="Type your message here." />
+            className="border-none text-lg focus-visible:ring min-h-[150px]"
+            placeholder="What do you want to talk about?" />
           </div>
         </form>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button type="submit">Post</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
