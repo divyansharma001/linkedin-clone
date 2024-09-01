@@ -89,7 +89,7 @@ export function Postdialog({
             </div>
           </DialogFooter>
         </form>
-        <Button variant={"ghost"} onClick={() => inputRef?.current?.click()}>
+        <Button className="gap-2" variant={"ghost"} onClick={() => inputRef?.current?.click()}>
           <ImageIcon className="text-blue-500" />
           <p>Media</p>
         </Button>
