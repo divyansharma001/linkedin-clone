@@ -4,19 +4,7 @@ export interface UserInterface {
     userId: Number,
     profilePhoto?: string,
     bio?: string,
-    timeStamps: Date,
+    timeStamp: string,
 }
 
-export interface PostInterface {
-    id : Number,
-    description: string,
-    userId: Number,
-    user: UserInterface,
-    imageUrl?: string,
-    likes: Number[],
-}
 
-export interface CommentInterface {
-    textMessage: string,
-    user: UserInterface,
-}

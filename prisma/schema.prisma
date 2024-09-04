@@ -34,7 +34,7 @@ model Post {
   comments Comment[]
   timestamp DateTime @default(now())
 }
-
+ 
 
 
 model Comment {

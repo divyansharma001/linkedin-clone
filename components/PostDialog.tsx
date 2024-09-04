@@ -27,6 +27,12 @@ export function Postdialog({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<string>("");
+  const [inputText, setInputText] = useState<string>("");
+
+ const changeHandler = async (e:any) => {
+ setInputText(e.target.value);
+ }
+
   const fileChangeHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const event = e.target;
     if (event && event.files && event.files.length > 0) {
@@ -37,6 +43,17 @@ export function Postdialog({
       }
     }
   };
+
+  const postActionHandler = async(formdata : FormData) => {
+    const inpuText = formdata.get('inputText') as String;
+    try {
+      await createPostAction(inputText, selectedFile);
+    } catch (error) {
+      console.error("error occured while posting", error);
+    }
+  }
+
+  
   return (
     <Dialog open={open}>
       <DialogContent
@@ -52,11 +69,13 @@ export function Postdialog({
             </div>
           </DialogTitle>
         </DialogHeader>
-        <form action="">
+        <form action={postActionHandler}>
           <div className="flex flex-col">
             <Textarea
               id="name"
               name="inputText"
+              value={inputText}
+              onChange={changeHandler}
               className="border-none text-lg min-h-[150px]"
               placeholder="What do you want to talk about?"
             />
