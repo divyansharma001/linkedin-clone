@@ -1,12 +1,12 @@
-"use server"
+"use server";
 
-import { UserInterface } from "@/types/UserInterface"
-import { currentUser } from "@clerk/nextjs/server"
-import {PrismaClient} from '@prisma/client'
+import { UserInterface } from "@/types/UserInterface";
+import { currentUser } from "@clerk/nextjs/server";
+import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -14,54 +14,50 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+export const createPostAction = async (
+  inputText: string,
+  selectedFile: string
+) => {
+  const user = await currentUser();
+  console.log("User:", user?.id);   
+  if (!user) throw new Error("User not authenticated");
+  if (!inputText) throw new Error("Input field is required");
 
-cloudinary.config({ 
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
-    api_key: process.env.CLOUDINARY_API_KEY, 
-    api_secret: process.env.CLOUDINARY_API_SECRET
-});
-    
+  const image = selectedFile ? selectedFile : null;
 
-export const createPostAction = async (inputText: string, selectedFile: string) => {
-   const user = await currentUser()
-   if(!user) throw new Error("User not authenticated")
-    if(!inputText) throw new Error("Input field is required")
+  const userDatabase: UserInterface = {
+    firstName: user?.firstName || "FirstName",
+    lastName: user?.lastName || "LastName",
+    userIdentity: user?.id || "UserId",
+    profilePhoto: user?.imageUrl,
+    timeStamp: new Date().toISOString(),
+  };
 
-        const image = selectedFile ? selectedFile : null;
+  console.log("UserDatabase:", userDatabase);
 
-        const userDatabase:UserInterface = {
-            firstName: user?.firstName || "FirstName",
-            lastName: user?.lastName || "LastName",
-            userId: +user?.id || NaN,
-            profilePhoto: user?.imageUrl,
-            timeStamp: new Date().toISOString()
-        }
+  try {
+    let uploadResponse;
+    if (image) {
+      //1. Create post with image and text
+      uploadResponse = await cloudinary.uploader.upload(image);
 
-        try {
-            
-           if (image) {
-            //1. Create post with image and text
-            await prisma.post.create({
-                data: {
-                    description: inputText,
-                    imageUrl: image,
-                    userId: +userDatabase.userId,
-                }
-            })
-          
-            
-           } else {
-            //2. Create post with text only
-            await prisma.post.create({
-                data: {
-                    description: inputText,
-                    userId: +userDatabase.userId,
-                }
-            })
-            
-           }
-            
-        } catch (error: any) {
-            throw new Error("Error occured while posting", error)
-        }
-}
+      await prisma.post.create({
+        data: {
+          description: inputText,
+          imageUrl: uploadResponse?.secure_url,
+          userIdentity : userDatabase.userIdentity
+        },
+      });
+    } else {
+      //2. Create post with text only
+      await prisma.post.create({
+        data: {
+          description: inputText,
+          userIdentity: userDatabase.userIdentity,
+        },
+      });
+    }
+  } catch (error: any) {
+    console.error("Error occurred while posting:", error);
+  }
+};

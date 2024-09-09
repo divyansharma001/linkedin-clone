@@ -1,7 +1,7 @@
 export interface UserInterface {
     firstName: string,
     lastName: string,
-    userId: Number,
+    userIdentity: string,
     profilePhoto?: string,
     bio?: string,
     timeStamp: string,

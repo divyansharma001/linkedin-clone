@@ -2,11 +2,9 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import Profilephoto from "./shared/Profilephoto";
@@ -15,6 +13,7 @@ import Image from "next/image";
 import { ImageIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { readFileAsDataUrl } from "@/lib/utils";
+import { createPostAction } from "@/lib/serveractions";
 
 export function Postdialog({
   setOpen,
@@ -29,9 +28,9 @@ export function Postdialog({
   const [selectedFile, setSelectedFile] = useState<string>("");
   const [inputText, setInputText] = useState<string>("");
 
- const changeHandler = async (e:any) => {
- setInputText(e.target.value);
- }
+  const changeHandler = async (e: any) => {
+    setInputText(e.target.value);
+  };
 
   const fileChangeHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const event = e.target;
@@ -44,16 +43,15 @@ export function Postdialog({
     }
   };
 
-  const postActionHandler = async(formdata : FormData) => {
-    const inpuText = formdata.get('inputText') as String;
+  const postActionHandler = async (formdata: FormData) => {
+    const inpuText = formdata.get("inputText") as String;
     try {
       await createPostAction(inputText, selectedFile);
     } catch (error) {
       console.error("error occured while posting", error);
     }
-  }
+  };
 
-  
   return (
     <Dialog open={open}>
       <DialogContent
@@ -108,7 +106,11 @@ export function Postdialog({
             </div>
           </DialogFooter>
         </form>
-        <Button className="gap-2" variant={"ghost"} onClick={() => inputRef?.current?.click()}>
+        <Button
+          className="gap-2"
+          variant={"ghost"}
+          onClick={() => inputRef?.current?.click()}
+        >
           <ImageIcon className="text-blue-500" />
           <p>Media</p>
         </Button>

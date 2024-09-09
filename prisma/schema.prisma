@@ -28,14 +28,14 @@ model Post {
   id Int @id @default(autoincrement())
   description String
   userId Int
+  userIdentity String
   user User @relation(fields: [userId], references: [id])
   imageUrl String?
-  likes Int[] @default([])
+  likes String[] @default([])
   comments Comment[]
   timestamp DateTime @default(now())
 }
  
-
 
 model Comment {
   id Int @id @default(autoincrement())
