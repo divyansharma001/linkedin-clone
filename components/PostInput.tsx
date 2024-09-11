@@ -15,7 +15,7 @@ const PostInput = ({ user }: { user: any }) => {
         <Profilephoto src={user?.imageUrl} />
         <Input
           type="text"
-          placeholder="Start a post" 
+          placeholder="Start a post"
           className="rounded-full hover:bg-gray-100 p-2 pl-4 h-12 w-full cursor-pointer"
           onClick={inputHandler}
         />
